@@ -5,11 +5,6 @@ function statement(inovice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `청구 내역 (고객명: ${inovice.customer})\n`;
-  const format = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format;
 
   for (let perf of inovice.performances) {
     volumeCredits += volumeCreditsFor(perf);
@@ -22,6 +17,14 @@ function statement(inovice, plays) {
   result += `총액: ${format(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
+}
+
+function format(aNumber) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(aNumber);
 }
 function volumeCreditsFor(aPerformance) {
   let result = 0;
