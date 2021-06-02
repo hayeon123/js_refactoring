@@ -4,11 +4,18 @@ import plays from "./plays.js";
 function statement(inovice, plays) {
   const statementData = {};
   statementData.customer = inovice.customer;
-  statementData.performances = inovice.performances;
+  statementData.performances = inovice.performances.map(enrichPerformance);
 
-  return renderPlainText(statementData, inovice, plays);
+  return renderPlainText(statementData, plays);
+  function enrichPerformance(aPerformance) {
+    const result = Object.assign({}, aPerformance);
+    return result;
+  }
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
+  }
 }
-function renderPlainText(data, inovice, plays) {
+function renderPlainText(data, plays) {
   let result = `청구 내역 (고객명: ${data.customer})\n`;
 
   for (let perf of data.performances) {
@@ -53,10 +60,6 @@ function renderPlainText(data, inovice, plays) {
     if ("comedy" === playFor(aPerformance).type)
       result += Math.floor(aPerformance.audience / 5);
     return result;
-  }
-
-  function playFor(aPerformance) {
-    return plays[aPerformance.playID];
   }
 
   function amountFor(aPerformance) {
