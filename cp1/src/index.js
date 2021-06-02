@@ -12,26 +12,8 @@ function statement(inovice, plays) {
   }).format;
   for (let perf of inovice.performances) {
     const play = plays[perf.playID];
-    console.log(perf, plays);
-    let thisAmount = 0;
-    switch (play.type) {
-      case "tragedy":
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
-        break;
-      case "comedy":
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
-        break;
+    let thisAmount = amountFor(perf, play);
 
-      default:
-        throw new Error(`알 수 없는 장르: ${play.type}`);
-    }
     //포인트 적립
     volumeCredits += Math.max(perf.audience - 30, 0);
     //희극 관객 5명마다 추가 포인트 제공
@@ -47,5 +29,26 @@ function statement(inovice, plays) {
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
 }
+function amountFor(perf, play) {
+  let result = 0;
+  switch (play.type) {
+    case "tragedy":
+      result = 40000;
+      if (perf.audience > 30) {
+        result += 1000 * (perf.audience - 30);
+      }
+      break;
+    case "comedy":
+      result = 30000;
+      if (perf.audience > 20) {
+        result += 10000 * (perf.audience - 20);
+      }
+      result += 300 * perf.audience;
+      break;
 
+    default:
+      throw new Error(`알 수 없는 장르: ${play.type}`);
+  }
+  return result;
+}
 console.log(statement(inovices, plays));
