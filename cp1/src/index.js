@@ -2,33 +2,36 @@ import inovices from "./inovices.js";
 import plays from "./plays.js";
 
 function statement(inovice, plays) {
-  let result = `청구 내역 (고객명: ${inovice.customer})\n`;
+  return renderPlainText(inovice, plays);
 
-  for (let perf of inovice.performances) {
-    //청구 내역을 출력한다.
-    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
-      perf.audience
-    }석)\n`;
-  }
-  let totalAmount = appleSauce();
+  function renderPlainText(inovice, plays) {
+    let result = `청구 내역 (고객명: ${inovice.customer})\n`;
 
-  result += `총액: ${usd(totalAmount)}\n`;
-  result += `적립 포인트: ${totalVolumeCredits()}점\n`;
-  return result;
-
-  function appleSauce() {
-    let totalAmount = 0;
     for (let perf of inovice.performances) {
-      totalAmount += amountFor(perf);
+      //청구 내역을 출력한다.
+      result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
+        perf.audience
+      }석)\n`;
     }
-    return totalAmount;
+
+    result += `총액: ${usd(totalAmount())}\n`;
+    result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+    return result;
+  }
+
+  function totalAmount() {
+    let result = 0;
+    for (let perf of inovice.performances) {
+      result += amountFor(perf);
+    }
+    return result;
   }
   function totalVolumeCredits() {
-    let volumeCredits = 0;
+    let result = 0;
     for (let perf of inovice.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      result += volumeCreditsFor(perf);
     }
-    return volumeCredits;
+    return result;
   }
 
   function usd(aNumber) {
