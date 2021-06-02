@@ -2,8 +2,8 @@ import inovices from "./inovices.js";
 import plays from "./plays.js";
 import createStatementData from "./createStatementData.js";
 
-function statement(inovice, plays) {
-  return renderPlainText(createStatementData(inovice, plays));
+function statement(inovices, plays) {
+  return renderPlainText(createStatementData(inovices, plays));
 }
 
 function renderPlainText(data, plays) {
@@ -43,5 +43,10 @@ function usd(aNumber) {
     minimumFractionDigits: 2,
   }).format(aNumber / 100);
 }
-console.log(statement(inovices, plays));
-htmlStatement(inovices, plays);
+function appendElement() {
+  let div = document.createElement("div");
+  div.innerHTML = htmlStatement(inovices, plays);
+  document.body.append(div);
+}
+statement(inovices, plays);
+appendElement();
